@@ -15,14 +15,11 @@ app = Flask(__name__)
 
 @app.route('/image-url', methods=['GET'])
 def image_url():
-	bucket = request.args.get('bucket')
-	image = request.args.get('image')
+	filepath = request.args.get('filepath')
 
-	if not all([bucket, image]):
-		error = json.dumps({'error': 'Missing `bucket` or `image` parameter.'})
+	if not all([filepath]):
+		error = json.dumps({'error': 'Missing `filepath` parameter.'})
 		return json_response(error, 422)
-
-	filepath = (bucket + "/" + image)
 
 	try:
 		servingImage = images.get_serving_url(None, filename='/gs/' + filepath)
